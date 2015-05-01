@@ -15,6 +15,7 @@ module.exports = {
 
     // Create a User with the params sent from
     //  the sign-up form --> new.ejs
+    // "req.params.all()" same as "req.allParams()"
     User.create( req.params.all(), function(err, user) {
 
       // // If there's an error
