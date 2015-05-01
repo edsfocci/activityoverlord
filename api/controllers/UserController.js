@@ -48,6 +48,46 @@ module.exports = {
         user: user
       });
     });
+  },
+
+  index: function(req, res, next) {
+
+    // Get an array of all Users in the User collection (e.g. table)
+    User.find(function(err, users) {
+      if (err) return next(err);
+      // pass the array down to the /views/index.ejs page
+      res.view({
+        users: users
+      });
+    });
+  },
+
+  // render the edit view (e.g. /views/edit.ejs)
+  edit: function(req, res, next) {
+
+    // Find the User from the id passed in via params
+    User.findOne(req.param('id'), function(err, user) {
+      if (err) return next(err);
+      if (!user) return next();
+
+      res.view({
+        user: user
+      });
+    });
+  },
+
+  // process the info from edit view
+  update: function(req, res, next) {
+    User.update(req.param('id'), req.params.all(), function(err) {
+      if (err) {
+        req.session.flash = {
+          err: err.invalidAttributes
+        };
+        return res.redirect('/user/edit/' + req.param('id'));
+      }
+
+      res.redirect('/user/' + req.param('id'));
+    });
   }
 	
 };
