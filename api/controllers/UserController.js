@@ -9,6 +9,21 @@ module.exports = {
 
   new: function(req, res) {
     res.view();
+  },
+
+  create: function(req, res, next) {
+
+    // Create a User with the params sent from
+    //  the sign-up form --> new.ejs
+    User.create( req.params.all(), function(err, user) {
+
+      // If there's an error
+      if (err) return next(err);
+
+      // After successfully creating the User
+      // redirect to the show action
+      res.json(user);
+    });
   }
 	
 };
