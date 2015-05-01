@@ -8,6 +8,8 @@
 module.exports = {
 
   new: function(req, res) {
+    res.locals.flash = _.clone(req.session.flash);
+    req.session.flash = undefined;
     res.view();
   },
 
@@ -17,12 +19,23 @@ module.exports = {
     //  the sign-up form --> new.ejs
     User.create( req.params.all(), function(err, user) {
 
-      // If there's an error
-      if (err) return next(err);
+      // // If there's an error
+      // if (err) return next(err);
+
+      if (err) {
+        console.log(err.invalidAttributes);
+        req.session.flash = {
+          err: err.invalidAttributes
+        };
+
+        // If error redirect back to sign-up page
+        return res.redirect('/user/new');
+      }
 
       // After successfully creating the User
       // redirect to the show action
       res.json(user);
+//      req.session.flash = undefined;
     });
   }
 	
