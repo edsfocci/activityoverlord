@@ -32,8 +32,20 @@ module.exports = {
 
       // After successfully creating the User
       // redirect to the show action
-      res.json(user);
-//      req.session.flash = undefined;
+      // From ep1-6: //res.json(user);
+
+      res.redirect('/user/'+user.id);
+    });
+  },
+
+  // show
+  findOne: function(req, res, next) {
+    User.findOne(req.param('id'), function(err, user) {
+      if (err) return next(err); // Catch all other errors
+      if (!user) return next(); // Redirect to 404
+      res.view({
+        user: user
+      });
     });
   }
 	
