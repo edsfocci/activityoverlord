@@ -22,7 +22,7 @@ module.exports = {
       // if (err) return next(err);
 
       if (err) {
-        console.log(err.invalidAttributes);
+        console.log(err);
         req.session.flash = {
           err: err.invalidAttributes
         };

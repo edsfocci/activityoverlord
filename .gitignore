@@ -117,4 +117,4 @@ nbproject
 .idea
 .node_history
 
-config.session.js
+config/session.js
