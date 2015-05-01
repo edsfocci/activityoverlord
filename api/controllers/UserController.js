@@ -7,7 +7,7 @@
 
 module.exports = {
 
-  new: function(req, res) {
+  'new': function(req, res) {
     res.view();
   },
 
@@ -68,7 +68,7 @@ module.exports = {
     // Find the User from the id passed in via params
     User.findOne(req.param('id'), function(err, user) {
       if (err) return next(err);
-      if (!user) return next();
+      if (!user) return next('User doesn\'t exist.');
 
       res.view({
         user: user
@@ -87,6 +87,23 @@ module.exports = {
       }
 
       res.redirect('/user/' + req.param('id'));
+    });
+  },
+
+  destroy: function(req, res, next) {
+
+    User.findOne(req.param('id'), function(err, user) {
+      if (err) return next(err);
+
+      if (!user) return next('User doesn\'t exist.');
+
+      User.destroy(req.param('id'), function(err) {
+        if (err) return next(err);
+
+      });
+
+      res.redirect('/user');
+
     });
   }
 	
