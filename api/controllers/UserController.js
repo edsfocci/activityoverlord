@@ -22,7 +22,7 @@ module.exports = {
       // if (err) return next(err);
 
       if (err) {
-        console.log(err);
+        // console.log(err);
         req.session.flash = {
           err: err.invalidAttributes
         };
@@ -30,6 +30,10 @@ module.exports = {
         // If error redirect back to sign-up page
         return res.redirect('/user/new');
       }
+
+      // Log User in
+      req.session.authenticated = true;
+      req.session.User = user;
 
       // After successfully creating the User
       // redirect to the show action
