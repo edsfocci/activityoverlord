@@ -33,8 +33,7 @@ module.exports = {
         err: usernamePasswordRequiredError
       };
 
-      res.redirect('/session/new');
-      return;
+      return res.redirect('/session/new');
     }
 
     // Try to find the User by their email address.
@@ -50,8 +49,7 @@ module.exports = {
         req.session.flash = {
           err: noAccountError
         };
-        res.redirect('/session/new');
-        return;
+        return res.redirect('/session/new');
       }
 
       // Compare password from the form params to the encrypted password of the
@@ -70,8 +68,7 @@ module.exports = {
           req.session.flash = {
             err: usernamePasswordMismatchError
           };
-          res.redirect('/session/new');
-          return;
+          return res.redirect('/session/new');
         }
 
         // Log User in

@@ -27,6 +27,5 @@ module.exports = function(req, res, next) {
       err: requireLoginError
     };
     res.redirect('/session/new');
-    return;
   }
 };
