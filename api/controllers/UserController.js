@@ -43,11 +43,17 @@ module.exports = {
       req.session.authenticated = true;
       req.session.User = user;
 
-      // After successfully creating the User
-      // redirect to the show action
-      // From ep1-6: //res.json(user);
+      // Change status to online
+      user.online = true;
+      user.save(function(err, user) {
+        if (err) return next(err);
 
-      res.redirect('/user/'+user.id);
+        // After successfully creating the User
+        // redirect to the show action
+        // From ep1-6: //res.json(user);
+
+        res.redirect('/user/'+user.id);
+      });
     });
   },
 

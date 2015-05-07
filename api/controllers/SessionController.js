@@ -75,27 +75,45 @@ module.exports = {
         req.session.authenticated = true;
         req.session.User = user;
 
-        // If the User is also an admin, redirect to the user list
-        // (e.g. /views/user/index.ejs)
-        // This is used in conjunction with config/policies.js file
-        if (req.session.User.admin) {
-          return res.redirect('/user');
-        }
+        // Change status to online
+        user.online = true;
+        user.save(function(err, user) {
+          if (err) return next(err);
 
-        // Redirect to their profile page (e.g. /views/user/findOne.ejs)
-        res.redirect('/user/' + user.id);
+          // If the User is also an admin, redirect to the user list
+          // (e.g. /views/user/index.ejs)
+          // This is used in conjunction with config/policies.js file
+          if (req.session.User.admin) {
+            return res.redirect('/user');
+          }
+
+          // Redirect to their profile page (e.g. /views/user/findOne.ejs)
+          res.redirect('/user/' + user.id);
+        });
       });
     });
   },
 
   destroy: function(req, res) {
 
-    // Wipe out the session (log out)
-    req.session.destroy();
+    User.findOne(req.session.User.id, function(err, user) {
 
-    // Redirect the browser to the sign-in screen
-    res.redirect('/session/new');
+      var userId = req.session.User.id;
+
+      // The User is "logging out" (e.g. destroying the session), so change the
+      // online attribute to false.
+      User.update(userId, {
+        online: false
+      }, function(err) {
+        if (err) return next(err);
+
+        // Wipe out the session (log out)
+        req.session.destroy();
+
+        // Redirect the browser to the sign-in screen
+        res.redirect('/session/new');
+      });
+    });
   }
-	
 };
 
