@@ -27,6 +27,11 @@ module.exports = {
       unique: true
     },
 
+    admin: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+
     encryptedPassword: {
       type: 'string'
     },
@@ -40,6 +45,21 @@ module.exports = {
       return obj;
     }
 
+  },
+
+  beforeValidation: function(values, next) {
+//    console.log(values);
+    if (typeof values.make_admin === 'undefined') {
+/*      if (values.make_admin === 'unchecked') {
+        values.admin = false;
+      } else if (values.make_admin[1] === 'on') {
+        values.admin = true;
+      }*/
+      values.admin = false;
+    } else if (values.make_admin === 'on') {
+      values.admin = true;
+    }
+    next();
   },
 
   beforeCreate: function(values, next) {

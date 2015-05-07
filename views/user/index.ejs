@@ -9,6 +9,7 @@
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
 
     <% _.each(users, function(user) { %>
@@ -17,6 +18,11 @@
         <td><%= user.name %></td>
         <td><%= user.title %></td>
         <td><%= user.email %></td>
+        <% if (user.admin) { %>
+          <td><img src="/images/admin.png" style="width:32px;height:33px" /></td>
+        <% } else { %>
+          <td><img src="/images/pawn.png" style="width:32px;height:32px" /></td>
+        <% } %>
         <td><a href="/user/<%= user.id %>" class="btn btn-sm btn-primary">
           Show
         </a></td>
